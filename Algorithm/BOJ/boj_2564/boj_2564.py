@@ -1,11 +1,11 @@
 import sys
-sys.stdin = open('input.txt')
-# input = sys.stdin.readline
+# sys.stdin = open('input.txt')
+input = sys.stdin.readline
 
 x, y = map(int, input().split())
 n = int(input())
-lst = [list(map(int, input().split())) for _ in range(n)]
-start = list(map(int, input().split()))
+lst = [list(map(int, input().split())) for _ in range(n)]           # 상점들
+start = list(map(int, input().split()))                             # 시작점
 
 
 res = 0
