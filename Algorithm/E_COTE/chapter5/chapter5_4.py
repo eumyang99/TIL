@@ -36,13 +36,13 @@ while 1:
             cnt_lst[nx][ny] = cnt_lst[x][y] + 1     # 카운트 +1
             goal = True                             # goal은 True로 하고 종료
             break
-        if 0 <= nx <= target_x and 0 <= ny <= target_y:
-            if lst[nx][ny] == 1 and (nx, ny) not in visited:
-                cnt_lst[nx][ny] = cnt_lst[x][y] + 1
-                visited.add((nx, ny))
-                que.append((nx, ny))
-    if goal == True:
-        break
+        if 0 <= nx <= target_x and 0 <= ny <= target_y:         # 리스트 범위 내에서 
+            if lst[nx][ny] == 1 and (nx, ny) not in visited:    # 길이 있으면서 visited에 없으면
+                cnt_lst[nx][ny] = cnt_lst[x][y] + 1             # 카운트 리스트에 +1
+                visited.add((nx, ny))                           # visited에 추가
+                que.append((nx, ny))                            # que에 append
+    if goal == True:                # while문 종료를 위해서
+        break                       # goal에 True면 종료
 
 print(cnt_lst[target_x][target_y])
 
