@@ -32,15 +32,15 @@ def func(cnt, x, y, k):
     return print(p, q)                          # p, q 출력
 
 import sys
-sys.stdin = open('input.txt')
+# sys.stdin = open('input.txt')
 input = sys.stdin.readline
 
-T = int(input())
-for case in range(T):
-    x ,y =  map(int, input().split())
-    k = int(input())
+# T = int(input())
+# for case in range(T):
+x ,y =  map(int, input().split())
+k = int(input())
 
-    func(0, x, y, k)
+func(0, x, y, k)
 
     
 
