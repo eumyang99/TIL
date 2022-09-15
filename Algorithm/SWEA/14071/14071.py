@@ -23,11 +23,8 @@ for case in range(T):
         else:                           # 부모가 tree에 있으면
             tree[p].append(c)               # 자식 추가
 
-
     
     res = 0
     func(n)
     print(f'#{case+1} {res}')
-
-
 
