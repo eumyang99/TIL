@@ -1,57 +1,96 @@
-import sys
-sys.stdin = open('input.txt')
+# import sys
+# sys.stdin = open('input.txt')
 
-Conversion = {'0':'0000', '1':'0001', '2':'0010', '3':'0011',
-         '4':'0100', '5':'0101', '6':'0110', '7':'0111',
-         '8':'1000', '9':'1001', 'A':'1010', 'B':'1011',
-         'C':'1100', 'D':'1101', 'E':'1110', 'F':'1111'}
+# T = int(input())
 
-decryption = {'211':0, '221':1, '122':2, '411':3, '132':4, '231':5, '114':6, '312':7, '213':8, '112':9}
+def binary_test(n, hex):
+    data = ''
+    for i in range(n):
+        target = hex[i]
+        if target.isdigit():
+            for x in range(4-1, -1, -1):
+                if int(target) & (1<<x):
+                    data = data + '1'
+                else:
+                    data = data + '0'                    
+        else:
+            for x in range(4-1, -1, -1):
+                if ord(target)-55 & (1<<x):
+                    data = data + '1'                    
+                else:
+                    data = data + '0'
+    data = data.rstrip('0')
+    print(data)
+    print(len(data))
 
-def reduce(c, b, a):
-    min_num = min(c,b,a)
-    c //= min_num
-    b //= min_num
-    a //= min_num
-    return str(c)+str(b)+str(a)
 
-TC = int(input())
-for tc in range(1, TC+1):
-    N, M = map(int, input().split())
-    Scannner = [input() for _ in range(N)]
 
-    Binary_lst = [''] * N
-    for i in range(N):
-        for j in range(M):
-            Binary_lst[i] += Conversion[Scannner[i][j]]
-    # print(Binary_lst)
 
-    result = []
-    visited = []
-    ans = 0
-    for y in range(N):
-        a = b = c = 0
-        for x in range(M*4-1, -1, -1):
-            if b == 0 and c == 0 and Binary_lst[y][x] == '1':
-                a += 1
-            elif a > 0 and c == 0 and Binary_lst[y][x] == '0':
-                b += 1
-            elif a > 0 and b > 0 and Binary_lst[y][x] == '1':
-                c += 1
+    code_ratio = [[2,1,1], [2,2,1], [1,2,2], [4,1,1], [1,3,2], [2,3,1], [1,1,4], [3,1,2], [2,1,3], [1,1,2]]
+    # code = []
+    # for i in range(10):
+    #     temp = ''
+    #     for x in range(4):
+    #         if x % 2 == 0:
+    #             temp = temp + '0' * code_info[i][x]
+    #         else:
+    #             temp = temp + '1' * code_info[i][x]
+    #     code.append(temp)
 
-            if a > 0 and b > 0 and c > 0 and Binary_lst[y][x] == '0':
-                result.append(decryption[reduce(c, b, a)])
-                a = b = c = 0
+    password = []
+    ratio = []
+    last_idx = len(data)-1
+    for i in range(last_idx-1, 0, -1):
+        if data[i] != data[i+1]:
+            ratio.append(last_idx-i)
+            last_idx = i
+            print(ratio)
+            if len(ratio) % 4 == 3:
+                temp = []
+                for x in range(3):
+                    temp.append(ratio[-1-x] // min(ratio))
+                for y in range(10):
+                    if code_ratio[y] == temp[::-1]:
+                        password.append(y)
+    password.reverse()
+    print(password)
+    # for i in range(len(data)%56, len(data), 7):
+    #     for num in range(10):
+    #         if data[i : i+7] == code[num]:
+    #             password.append(num)
+    #             break
 
-            if len(result) == 8:
-                result = result[::-1]
-                value = (result[0] + result[2] + result[4] + result[6]) * 3 + \
-                        (result[1] + result[3] + result[5]) + result[7]
+    # print(password)
 
-                if value % 10 == 0 and result not in visited:
-                    ans += sum(result)
+    # check = 0
+    # for i in range(n-1):
+    #     if i % 2 == 0:
+    #         check += int(hex[i]) * 3
+    #     else:
+    #         check += int(hex[i])
+    
+    # res = 0
+    # if check + int(hex[-1]) % 10:
+    #     for i in hex:
+    #         res += int(i)
+    
 
-                visited.append(result)
-                result = []
+    # return res
 
-    print('#%d %d'%(tc, ans))
+binary_test(len('196EBC5A316C578'), '196EBC5A316C578')
+
+
+
+
+
+
+
+# for case in range(T):
+#     n, m = map(int, input().split())
+#     code = set()
+#     for _ in range(n):
+#         line = input().strip('0')
+#         if line:
+#             print(line)
+#     # print(code)
+
