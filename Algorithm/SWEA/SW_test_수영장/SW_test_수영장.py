@@ -1,65 +1,46 @@
 import sys
 sys.stdin = open('input.txt')
 
-def func(x):
-    return (x[0],-x[1])
-    # return (-x[0],x[1])
+def opti(idx, temp):            # idx는 인덱스, temp는 누적되는 비용
+    global res
+
+    if idx > 11:                # 인덱스가 초과하면
+        if temp < res:          # 누적값과 res를 비교
+            res = temp          # res 갱신
+            return
+
+    for i in range(idx, 12):    # 시작 idx부터 마지막까지
+        a = sum(swim[i:i+3])    # i부터 3개의 누적비용을 a에 할당
+        if a > m3:                  # a가 3개월 결제보다 비싸면 
+            temp += m3          # temp에 3개월 비용 추가
+            opti(i+3, temp)     # 그리고 이후 인덱스에 3을 추가해서 함수로
+            temp -= m3          # 함수에서 빠져나오면 추가한 비용 차감하고
+            temp += swim[i]     # 해당 달은 1일 결제로 처리한 뒤 다음 인덱스부터 3개월치 비교하러 for문으로
+        else:                       # a가 3개월 비용보다 저렴하면
+            temp += swim[i]     # 해당 월은 1일 결제로 처리
+            opti(i+1, temp)     # 인덱스 +1하고 다시 함수로
+
+
+            
 T = int(input())
 for case in range(T):
-    d, m1, m3, m12 = list(map(int, input().split()))
+    d, m1, m3, y = list(map(int, input().split()))
     swim = list(map(int, input().split()))
+    dtom = m1 // d                  # 하루 결제 보다 한달 결제가 효율적이게 되는 기준
 
-    temp_1 = [0]*12
-    for i in range(12):
-        if swim[i] > m1 / d:
-            temp_1[i] = m1
+    for i in range(12):             # 매월
+        days = swim[i]              # 하루 결제가 유리하면 하루결제 비용으로
+        if days > dtom:             # 한달 결제가 유리하면 한달결제 비용으로
+            swim[i] = m1            # 리스트를 변경
         else:
-            temp_1[i] = d*swim[i]
+            swim[i] = days * d
+
     
-    print(temp_1)
+    res = 3000*12+1                 # 최소값을 찾으니 임의의 최대값 상정
+    opti(0, 0)
 
-
-    idx = 0
-    while idx < 12:
-        temp = 0
-        if idx <= 12-5:
-            for x in range(3):
-                if x == 0:
-                    if temp > m3:
-                        temp = sum(temp_1[idx+x:idx+3+x])
-                    else:
-                        idx += 1
-                        break
-                else:
-                    if temp < sum(temp_1[idx+x:idx+3+x]):
-                        idx += 1
-                        break
-            else:
-                for p in range(3):
-                    if p == 0:
-                        temp_1[idx] = temp
-                    else:
-                        temp_1[idx+p] = 0
-                idx += 3
-                break
-        else:
-            break
-        
-
-
-
-
-
-
-
-        
-            
-
-    print(f'#{case+1} {temp_1}')
-    res = sum(temp_1)
-    if res < m12:
-        print(f'#{case+1} {sum(temp_1)}')
-    else:
-        print(f'#{case+1} {m12}')
-    print()
+    if res > y:                     # 모든 경우의 수보다 1년 결제가 효율적이면
+        print(f'#{case+1} {y}')     # 1년 결제를
+    else:                           # 그렇지 않다면
+        print(f'#{case+1} {res}')   # 최소값을 출력
 
