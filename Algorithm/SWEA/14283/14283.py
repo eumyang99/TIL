@@ -13,7 +13,7 @@ for case in range(T):
     for _ in range(E):
         s, e, w = map(int, input().split())
         adj[s][e] = w  
-
+    print(adj)
     res_lst = [0] + [11*(N+1)]*(N)                      # 0으로 부터 리스트의 각 노드(리스트의 idx)까지의 최소 거리
 
     q = deque([0])                                      # 시작점 0을 큐에 넣고
