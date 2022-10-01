@@ -1,3 +1,4 @@
+from pprint import pprint
 from collections import deque
 import sys
 sys.stdin = open('input.txt')
@@ -35,5 +36,5 @@ for case in range(T):
                     q.append((nx, ny, lst[nx][ny]))
 
     print(f'#{case+1} {visited[-1][-1]}')
-            
+    pprint(visited)            
 
