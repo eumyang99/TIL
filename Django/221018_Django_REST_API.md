@@ -458,6 +458,137 @@ REST API
 
 5. N:1 - 역참조 데이터 조회
    1. 특정 게시글에 작성된 댓글 목록 출력하기
-      1. 기존 필드 override
+      1. 기존 필드 override - Article Detail
+      2. Serializer는 기존 필드를 override 하거나 추가적인 필드를 구성할 수 있음
+
    2. 특정 게시글에 작성된 댓글 개수 출력하기
-      1. 새로운 필드 추가
+      1. 완전히 새로운 필드 추가 - Article Detail
+      2. source => serializers field's argument (필드를 채우는 데 사용할 속성의 이름)
+
+   3. ```python
+      # articles/serializers.py
+      class ArticleSerializer(serializers.ModelSerializer):
+          # # 이렇게 하면 특정 article에 달려 있는 댓글들의 pk값들을 보여줌
+          # comment_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+          
+          # 이렇게 하면 특정 article에 달려 있는 댓글들을 CommentSerializer에서 보여주는 형식으로 보여줌
+          comment_set = CommentSerializer(many=True, read_only=True)
+      
+          # 특정 article에 달려 있는 댓글들의 개수를 보여줌
+          comment_count = serializers.ImageField(source='comment_set.count', read_only=True)
+          
+      
+          class Meta:
+              model = Article
+              fields = '__all__'
+      ```
+
+   4. 위처럼 override나 새로운 필드를 추가하는 경우 read_only_fields를 사용할 수 없음
+
+      1. 기존에 있는 필드에서는 read_only_fields를 사용할 수 있지만
+
+      2. ```python
+         comment_set = CommentSerializer(many=True, read_only=True)
+         # 처럼 read_only=True 로 각자 따로 다루어야 함
+         ```
+
+6. Django shortcuts 기능
+
+   1. render(), redirect() ... 등등
+
+   2. get_object_or_404()
+
+      1. object를 get 하거나 404를 보여주거나
+
+      2. ```python
+         # articles/views.py
+         from django.shortcuts import get_object_or_404
+         
+         .
+         .
+         .
+         
+         @api_view(['GET', 'DELETE', 'PUT'])
+         def article_detail(request, article_pk):
+             ## 원래는 이렇게 get했는데 만약 해당하는 pk의 대상이 없으면 404를 보내주어야 함
+             ## article = Article.objects.get(pk=article_pk)
+             
+             # 이렇게 하면 위의 식과 같은 기능을 하면서 대상이 없을 때 404를 보여줌
+             article = get_object_or_404(Article, pk=article_pk)
+             
+             if request.method == 'GET':
+                 serializer = ArticleSerializer(article)
+                 return Response(serializer.data)
+         
+         .
+         .
+         .
+         
+         @api_view(['GET', 'DELETE', 'PUT'])
+         def comment_detail(request, comment_pk):
+             # comment = Comment.objects.get(pk=comment_pk)
+             # 얘도 바꿔줘야 함
+             comment = get_object_or_404(Comment, pk=comment_pk)
+             
+             if request.method == 'GET':
+                 serializer = CommentSerializer(comment)
+                 return Response(serializer.data)
+             
+         .
+         .
+         .
+         
+         @api_view(['POST'])
+         def comment_create(request, article_pk):
+             # article = Article.objects.get(pk=article_pk)
+             # 얘도 바꿔줘야 함
+             article = get_object_or_404(Article, pk=article_pk)
+             
+             serializer = CommentSerializer(data=request.data)
+             if serializer.is_valid(raise_exception=True):
+                 serializer.save(article=article)
+                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+         ```
+
+   3. get_list_or_404()
+
+      1. 쿼리셋을 get 하거나 404를 보여주거나 
+
+      2. ```python
+         # articles/views.py
+         from django.shortcuts import get_object_or_404, get_list_or_404 # 추가
+         
+         .
+         .
+         .
+         
+         @api_view(['GET', 'POST'])
+         def article_list(request):
+             if request.method == 'GET':
+                 # articles = Article.objects.all()
+                 articles = get_list_or_404(Article)
+                 
+                 serializer = ArticleListSerializer(articles, many=True)
+                 return Response(serializer.data)
+             
+             .
+             .
+             .
+             
+         @api_view(['GET'])
+         def comment_list(request):
+             if request.method == 'GET':
+                 # comments = Comment.objects.all()
+                 comments = get_list_or_404(Comment)
+                 serializer = CommentSerializer(comments, many=True)
+                 return Response(serializer.data)
+             
+             .
+             .
+             .
+         ```
+
+
+
+
+
