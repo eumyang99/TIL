@@ -349,7 +349,7 @@
 - 조금 더 유동적으로 타입 설정이 가능
 
 - ```typescript
-  function getSize<T>(arr): number {
+  function getSize<T>(arr:T[]): number {
     return arr.length
   }
   
