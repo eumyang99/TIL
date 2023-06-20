@@ -1,0 +1,20 @@
+import sys
+input = sys.stdin.readline
+
+## 발상
+## 큰 단위의 동전부터 꽉꽉 채워넣자
+
+n, k = map(int, input().split())
+coins = []
+for _ in range(n):
+    coins.append(int(input()))
+
+res = 0
+idx = n-1
+while k != 0:
+    if k >= coins[idx]:
+        q, k = divmod(k, coins[idx])
+        res += q
+    idx -= 1
+
+print(res)
