@@ -1,28 +1,61 @@
 def solution(scores):
     man = scores[0]
-    lst = [[] for _ in range(200001)]
-    for score in scores:
-        lst[sum(score)].append(score)
-
+    man_sum = sum(man)
+    scores.sort(key = lambda x: [x[0], x[1]], reverse=True)
+    
+    norm = scores[0]
     res = 1
-    for i in range(sum(man)+1, 200001):
-        res += len(lst[i])
-
-    last_group = 200000
-    for i in range(200000, -1, -1):
-        if len(lst[i]) == 0:
-            last_group -= 1
+    temp = scores[0]
+    for score in scores:
+        if norm[0] > score[0]:
+            norm = temp
+        if sum(score) <= man_sum:
+            continue
         else:
-            break
+            if score[0] < norm[0] and score[1] < norm[1]:
+                continue
+            if score[1] > norm[1]:
+                temp = score
+                res += 1
+                continue
+            res += 1
 
-    for x in range(sum(man)+1, last_group-1):
-        for y in range(len(lst[x])):
-            for z in range(x+2, last_group+1):
-                for w in range(len(lst[w])):
-                    if lst[x][y][0] < lst[z][w][0] and lst[x][y][1] < lst[z][w][1]:
-                        res -= 1 
     return res
+
+
+
+
+
+####################################################################################################
+
+
+    # man = scores[0]
+    # lst = [[] for _ in range(200001)]
+    # for score in scores:
+    #     lst[sum(score)].append(score)
+
+    # res = 1
+    # for i in range(sum(man)+1, 200001):
+    #     res += len(lst[i])
+
+    # last_group = 200000
+    # for i in range(200000, -1, -1):
+    #     if len(lst[i]) == 0:
+    #         last_group -= 1
+    #     else:
+    #         break
+
+    # for x in range(sum(man)+1, last_group-1):
+    #     for y in range(len(lst[x])):
+    #         for z in range(x+2, last_group+1):
+    #             for w in range(len(lst[w])):
+    #                 if lst[x][y][0] < lst[z][w][0] and lst[x][y][1] < lst[z][w][1]:
+    #                     res -= 1 
+    # return res
             
+
+####################################################################################################
+
 
     # man = scores[0]
     # scores.sort(key=lambda x: sum(x))
