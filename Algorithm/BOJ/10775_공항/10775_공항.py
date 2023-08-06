@@ -16,7 +16,7 @@ input = sys.stdin.readline
 
 # parent = [i for i in range(gate + 1)]
 
-## 이 부분이 어려운 부분
+# # 이 부분이 어려운 부분
 # def find(a):
 #     if a == parent[a]:
 #         return a
