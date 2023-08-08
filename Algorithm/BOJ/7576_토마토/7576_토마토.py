@@ -30,7 +30,7 @@ while q:
     res += 1
     q = n_q
 
-print(res if not_ready == 0 else -1)
+print(res-1 if not_ready == 0 else -1)
 
 
     
