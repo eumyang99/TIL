@@ -1,4 +1,3 @@
-from pprint import pprint
 import sys
 input = sys.stdin.readline
 
@@ -10,28 +9,22 @@ lst = [list(map(int, input().split())) for _ in range(n)]
 lst[robot[0]][robot[1]] = 2
 
 res = 1
-stack = [(robot)]
-while stack:
-    x, y, d = stack.pop()
+x, y, d = robot
+while 1:
     for i in range(4):
         di = (d - i + 3) % 4
         nx, ny, nd = x+dx[di], y+dy[di], di
         if lst[nx][ny] == 0:
             res += 1
             lst[nx][ny] = 2
-            pprint(lst)
-            stack.append((nx, ny, nd))
+            x, y, d = nx, ny, nd
             break
     else:
-        di = abs(d-2)
+        di = (d + 2) % 4
         nx, ny = x+dx[di], y+dy[di]
         if lst[nx][ny] == 1:
             break
-        stack.append((nx, ny, d))
+        x, y, d = nx, ny, d
 
 print(res)
 
-# 0 -1 -2 -3 -4
-# 1  0 -1 -2- 3
-# 2  1  0 -1 -2
-# 3  2  1  0 -1
