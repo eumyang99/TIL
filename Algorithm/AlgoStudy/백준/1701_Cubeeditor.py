@@ -1,45 +1,33 @@
-from collections import defaultdict
 import sys
 input = sys.stdin.readline
 
-## 재귀도 터지고 시간도 오래 걸리고 답도 틀림
+## 발상
+## kmp를 활용한다.
+## kmp를 직접적으로 사용하는 것이 아니라 table 실패함수를 구하는 원리를 사용해서 푼다.
+## 자세한 내용은 notion에 kmp 실패함수 table을 만드는 과정을 보면 된다.
+## 추가된 내용은 문제 특성 상 pattern으로 사용하는 것을 
 
-def uu(arr, cnt):
-    used = [[] for _ in range(26)]
-    for idx in arr:
-        if idx+1 < n:
-            used[lst[idx+1]].append(idx+1)
-    temp = []
-    for a in used:
-        if len(a) >= 2:
-            temp.append(a)
-    if temp:
-        for b in temp:
-            return uu(b, cnt+1)
-    else:
-        return cnt
-    
+## for start in range(len(text)):
+##    pattern = text[start:]
 
-word = input().rstrip()
-n = len(word)
-## 소문자를 숫자로 변환
-lst = [ord(i)-97 for i in word]
+## 으로 해서 모든 패턴을 앞에서부터 하나씩 줄여나간다는 점
 
-## 딕셔너리에 담음
-dic = defaultdict(list)
-for i in range(len(word)):
-    dic[lst[i]].append(i)
+text = input().rstrip()
 
 res = 0
-## 같은 알파벳 모두로 시작
-for start_alpha in dic.keys(): #0, 1, 2
-    temp = 0
-    start_alpha_lst = dic[start_alpha][:]
-    ## 같은 알파벳이 2개 이하면 같은게 있을 수 없으니 패스
-    ## 두개 이상부터 재귀 함수
-    if len(start_alpha_lst) > 1:
-        temp = max(uu(start_alpha_lst, 1), temp)
-    res = max(temp, res)
+for start in range(len(text)):
+    pattern = text[start:]
+    pattern_len = len(pattern)
+    table = [0]*(pattern_len)
+    j = 0
+    for i in range(1, pattern_len):
+        while j > 0 and pattern[i] != pattern[j]:
+            j = table[j-1]
+        if pattern[i] == pattern[j]:
+            j += 1
+            table[i] = j
+    res = max(max(table), res)
+
 print(res)
 
 
