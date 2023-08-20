@@ -1,5 +1,13 @@
+from collections import deque
 import sys
 input = sys.stdin.readline
+
+
+## 발상
+## bfs로 갈 수 있는 가장 가까운 먹이를 찾아간다.
+## 그곳에서 새롭게 다시 bfs를 돌려서 가장 가까운 먹이를 찾아간다.
+## 반복
+
 
 ## 상 좌 우 하
 dx, dy = [-1, 0, 0, 1], [0, -1 ,1, 0]
@@ -21,10 +29,10 @@ que = []
 size = 2
 eat = 0
 dist = 1
-stack = [now]
+stack = deque([now])
 temp = []
 while stack:
-    x, y = stack.pop(0)
+    x, y = stack.popleft()
     for i in range(4):
         nx, ny = x+dx[i], y+dy[i]
         if 0 <= nx < n and 0 <= ny < n and lst[nx][ny] <= size and visited[nx][ny] == 0:
@@ -34,10 +42,11 @@ while stack:
             temp.append((nx, ny))
 
     if len(stack) == 0:
+        
         if que:
             que.sort(key= lambda x: (x[0], x[1], x[2]))
             res += que[0][0]
-            stack = [(que[0][1], que[0][2])]
+            stack = deque([(que[0][1], que[0][2])])
             dist = 1
             temp = []
             visited = [[0]*n for _ in range(n)]
@@ -49,9 +58,10 @@ while stack:
                 eat = 0
                 size += 1
             continue
-        stack = temp
+        stack = deque(temp)
         temp = []
         dist += 1
 
 print(res)
+
 
