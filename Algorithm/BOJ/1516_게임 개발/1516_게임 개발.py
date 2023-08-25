@@ -42,6 +42,9 @@ while que:
             ## 해당 노드의 소요시간 = maxi + 현재 건물의 소요시간
             res[e] = maxi + w
 
+
+## print("\n".join(map(str, dp[1:]))) 이런 식으로 출력할 수 있네
+## map으로 리스트를 str으로 바꾼 뒤 join으로 줄바꿈!
 for time in res[1:]:
     print(time)
 
