@@ -40,7 +40,6 @@ print(res)
 
 # 2
 ## heapq 프림으로 풀어봤다.
-## pypy3로만 통과된다.
 ## start를 처음 pq에 넣는다(weight, 연결할 node)
 ## pq를 pop해서 연결할 노드가 연결되어 있지 않다면
 ## res에 가중치를 더해주고 v-1개의 간선만 필요하니 cnt로 while문을 관리한다.
@@ -64,12 +63,12 @@ print(res)
 #             cnt += 1 
 #             if weight > max_weight:
 #                 max_weight = weight
-#         if cnt == n:
-#             break
-        
-#         for next_weight, next_node in dic[node]:
-#             if visited[next_node] == 0:
-#                 heapq.heappush(pq, (next_weight, next_node))
+#             if cnt == n:
+#                 break
+#            
+#             for next_weight, next_node in dic[node]:
+#                 if visited[next_node] == 0:
+#                     heapq.heappush(pq, (next_weight, next_node))
         
 #     return res - max_weight
 
