@@ -19,4 +19,5 @@ for i in range(1, n):
     b = lst[i][1] + min(dp[i-1][0], dp[i-1][2])
     c = lst[i][2] + min(dp[i-1][0], dp[i-1][1])
     dp.append((a, b, c))
+    print(dp)
 print(min(dp[-1]))
