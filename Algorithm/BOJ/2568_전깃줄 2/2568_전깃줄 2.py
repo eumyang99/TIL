@@ -1,6 +1,8 @@
 import sys
 input = sys.stdin.readline
 
+## 노션 LIS
+
 def binary_search(LIS, num):
     left, right = 0, len(LIS) - 1
     while left < right:
