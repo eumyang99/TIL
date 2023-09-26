@@ -9,7 +9,7 @@ def uu(case, cnt, memo):
             if res < maxi:
                 res = maxi
         return 
-    
+
     for direction in range(4):
         case.append(direction)
         uu(case, cnt+1, move(memo, direction))
