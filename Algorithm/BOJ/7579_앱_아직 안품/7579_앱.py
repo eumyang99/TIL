@@ -22,14 +22,8 @@ cost_arr = list(map(int, input().split()))
 dp_len = sum(cost_arr) + 1
 dp = [0] * dp_len
 
-## 첫번째 앱을 비활성화했을 때 비용 idx ~ 마지막 비용 idx까지 확보한 메모리를 할당
-## 앱 비활성화 비용보다 작은 dp의 idx 경우 해당 비용(idx)으로는 이 앱을 비활성화 시킬 수 없기 때문에 0(확보한 메모리 값)을 유지
-## 앱 비활성화 비용보다 큰 경우 지금은 첫번째 앱만 확인한 것이기 때문에 첫번째 앱의 메모리만 dp에 할당  
-for i in range(cost_arr[0], dp_len):
-    dp[i] = memory_arr[0]
-
-## 두번째 앱부터 마지막 앱까지 순회하며
-for i in range(1,n):
+## 첫번째 앱부터 마지막 앱까지 순회하며
+for i in range(n):
     memory = memory_arr[i]
     cost = cost_arr[i]
 
@@ -49,9 +43,22 @@ for i in range(1,n):
         else:
             dp[cost_dp] = max(dp[cost_dp - cost] + memory, dp[cost_dp])
 
-## 처음으로 필요한 메모리를 확보한 idx(비용)를 출력
-for i in range(dp_len):
-    if dp[i] >= m:
-        print(i)
-        break
 
+## 처음으로 필요한 메모리를 확보한 idx(비용)를 출력
+## dp 최대 길이가 10000이라서 두 방법 다 속도 차이는 안남 
+## 이분탐색으로 찾기
+left, right = 0, dp_len-1
+while left <= right:
+    mid = (left + right) // 2
+    if dp[mid] < m:
+        left = mid + 1
+    else:
+        right = mid - 1
+else:
+    print(left)
+
+## 그냥 for문으로 찾기
+# for i in range(dp_len):
+#     if dp[i] >= m:
+#         print(i)
+#         break
