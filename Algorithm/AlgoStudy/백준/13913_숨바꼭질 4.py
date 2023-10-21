@@ -29,7 +29,7 @@ else:
 
 
 
-## 경로를 que에 담지 않는 효율적이 방법
+## 경로를 que에 담지 않는 효율적이 방법(Java 코드 chatGPT로 번역)
 ## BFS + parent : [최단거리, 경로] 를 알아내야 하는 경우에 좋은 방법
 from collections import deque
 
