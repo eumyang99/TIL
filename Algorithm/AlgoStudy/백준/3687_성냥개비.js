@@ -37,9 +37,6 @@ function solution(input) {
       }
     }
 
-    if (target === 78) {
-      console.log(dp);
-    }
     // 최대값
     let max_res = [];
     let quotient = Math.floor(target / 2);
