@@ -63,14 +63,14 @@ function solution(n, in_order, post_order) {
 
     // 순서대로 오른쪽 트리, 왼쪽 트리를 stack에 추가
     stack.push([
-      new_right_tree_post_first_idx,
-      post_last_idx - 1,
+      new_right_tree_post_first_idx, // 오른쪽 트리가 없으면 post_last_idx
+      post_last_idx - 1, // 이 경우 시작 값이 끝 값보다 커짐 => base case
       new_right_tree_first_in_idx,
       in_last_idx,
     ]);
     stack.push([
       post_first_idx,
-      new_left_tree_post_last_idx,
+      new_left_tree_post_last_idx, // 왼쪽 트리가 없으면 시작 값이 끝 값보다 커짐 => base case
       in_first_idx,
       new_left_tree_in_last_idx,
     ]);
