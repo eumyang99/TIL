@@ -40,7 +40,7 @@ function solution(n, in_order, post_order) {
     // base case
     if (post_last_idx < post_first_idx) continue;
 
-    // preorder의 마지막 값 = 트리의 루트 노드
+    // postorder의 마지막 값 = 트리의 루트 노드
     let node_value = post_order[post_last_idx];
     // res에 추가
     res.push(node_value);
@@ -48,14 +48,17 @@ function solution(n, in_order, post_order) {
     // 다음 2개의 하위 트리 대한 정보
     // 루트 노드의 값이 inorder의 몇번째 idx에 있는지 확인
     let in_idx = in_order_map[node_value];
+
     // 하위 왼쪽 트리의 크기
     let left_tree_size = in_idx - in_first_idx;
     // 하위 오른쪽 트리의 크기
     let right_tree_size = in_last_idx - in_idx;
+
     // 하위 왼쪽 트리의 inorder 끝 idx
     let new_left_tree_in_last_idx = in_idx - 1;
     // 하위 오른쪽 트리의 inorder 시작 idx
     let new_right_tree_first_in_idx = in_idx + 1;
+
     // 하위 왼쪽 트리의 postorder 끝 idx
     let new_left_tree_post_last_idx = post_first_idx + left_tree_size - 1;
     // 하위 오른쪽 트리의 postorder 시작 idx
@@ -63,7 +66,7 @@ function solution(n, in_order, post_order) {
 
     // 순서대로 오른쪽 트리, 왼쪽 트리를 stack에 추가
     stack.push([
-      new_right_tree_post_first_idx, // 오른쪽 트리가 없으면 post_last_idx
+      new_right_tree_post_first_idx, // 오른쪽 트리가 없으면 이 값은 post_last_idx
       post_last_idx - 1, // 이 경우 시작 값이 끝 값보다 커짐 => base case
       new_right_tree_first_in_idx,
       in_last_idx,
