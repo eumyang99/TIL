@@ -53,12 +53,12 @@ function solution(n, tops) {
   let before_sum = 1;
   // 처음 위쪽 삼각형이 있으면 4
   // 없으면 3
-  let sum = tops[0] ? 4 : 3;
+  let sum = 3 + tops[0];
 
   // 이후 삼각형을 순회하며
   for (let i = 1; i < n; i++) {
     // 다음 sum 값을 임시 저장
-    let next_sum = ((tops[i] ? 4 : 3) * sum - before_sum) % 10007;
+    let next_sum = ((3 + tops[i]) * sum - before_sum) % 10007;
     // 다음 sum 값이 음수라면 10007을 더함
     if (next_sum < 0) next_sum += 10007;
     // before_sum과 sum 갱신
